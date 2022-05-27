@@ -1,21 +1,37 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Image from "next/image";
-import Link from 'next/link'
 import styles from "../styles/Photo.module.css";
+import PhotoCard from "./PhotoCard";
+
 export const PhotoGallery = () => {
   const [data, setData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
-  const baseURL = "http://localhost:3004/photos";
+  const baseURL = "https://photogallery-data.herokuapp.com/photos";
   useEffect(() => {
+    createPost()
+  }, [data, filteredData]);
+
+  const createPost = () => {
     axios.get(baseURL).then((response) => {
       setData(response.data);
     });
-  }, []);
+  }
+  const deletePost = (id) => {
+    axios.delete(`${baseURL}/${id}`).then(() => {
+         alert("Post deleted!");
+        });
+  }
+  // const updatePost = (id) => {
+  //   let item = data[id]
+  //   setData()
+  //   // axios.put(`${baseURL}/${id}`, {body}).then(() => {
+  //   //     alert("Post Updated!");
+  //   //   });
+  // }
 
-  //   console.log(data);
+  // //   console.log(data);
 
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
@@ -49,50 +65,14 @@ export const PhotoGallery = () => {
       </div>  
       <div className={`${styles.gallery} ${styles.gallery__content_flow}`}>
         {searchInput.length > 2
-          ? filteredData.map((item, index) => {
+          ? filteredData.map((item) => {
               return (
-                <div className={styles.figure} key={index}>
-                  <h3>{item.Heading1}</h3>
-                  <Image
-                    width={350}
-                    height={250}
-                    className={styles.img_photo}
-                    src={item.src}
-                    alt={item.Desc}
-                    title={item.title}
-                  />
-                  <figcaption className={styles.header__caption}>
-                    <p className={`${styles.title} ${styles.title_primary}`}>
-                      {item.Desc}
-                    </p>
-                    <h2 className={`${styles.title} ${styles.title_secondary}`}>
-                      {item.Heading2}
-                    </h2>
-                  </figcaption>
-                </div>
+                <PhotoCard item={item} key={item.id} del={deletePost}/>
               );
             })
           : data.map((item, index) => {
               return (
-                <div className={styles.figure} key={index}>
-                  <h3>{item.Heading1}</h3>
-                  <Image
-                    width={350}
-                    height={250}
-                    className={styles.img_photo}
-                    src={item.src}
-                    alt={item.Desc}
-                    title={item.title}
-                  />
-                  <figcaption className={styles.header__caption}>
-                    <p className={`${styles.title} ${styles.title_primary}`}>
-                      {item.Desc}
-                    </p>
-                    <h2 className={`${styles.title} ${styles.title_secondary}`}>
-                      {item.Heading2}
-                    </h2>
-                  </figcaption>
-                </div>
+                <PhotoCard item={item} key={item.id} del={deletePost}/>
               );
             })}
       </div>

@@ -2,7 +2,7 @@
     display: flex;
     place-content: top;
     max-width: 90%;
-    min-height: 100vh;
+    /* min-height: 100vh; */
 }
 
 .gallery__content_flow {
@@ -23,7 +23,7 @@
     position: relative;
     border-radius: .35rem;
     overflow: hidden;
-    transition: transform var(--anim-time--med) ease;
+    transition: transform 0.2s ease;
     
 }
 .figure h3 {
@@ -52,7 +52,7 @@
     );
     opacity: 0;
     transition-property: opacity, transform;
-    transition-duration: var(--anim-time--med), var(--anim-time--med);
+    transition-duration: 0.2s, 0.2s;
     transition-timing-function: ease, ease;
       z-index: 4;
 }
@@ -69,8 +69,8 @@
     justify-content: center;
     text-align: center;
     transform: translateY(100%);
-    transition: transform var(--anim-time--hi) linear,
-    opacity var(--anim-time--hi) linear;
+    transition: transform 0.2s linear,
+    opacity 0.2s linear;
 }
 
 .figure:hover::before {
