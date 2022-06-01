@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import {useForm} from 'react-hook-form'
+import { dataStateContext } from "../pages/index";
+import { useContext, useEffect } from "react";
 
 const initialFormData = {
     src:'',
@@ -11,31 +10,13 @@ const initialFormData = {
     Heading2:''
 }
 const AddPhoto = () => {
-const router = useRouter()
-const baseURL = "https://photogallery-data.herokuapp.com/photos";
-const [formData, setFormData] = useState();
+const context = useContext(dataStateContext);
 const { register, handleSubmit, reset, formState: { errors, isSubmitSuccessful } } = useForm({ defaultValues: initialFormData });
-
-const onSubmit = (formData) => {
-    const createPost = () => {
-      axios.post(baseURL, formData)
-      .then(response => response.data.id);
-    }
-  createPost()
-  // console.log(formData);
-}
 useEffect(() => {
   reset({src:'',  Desc:'',  Heading1:'',  Heading2:''})
 }, [isSubmitSuccessful])
-const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
   return <>
-    <form className="survey-form" style={{width:'30%'}}  onSubmit={handleSubmit(onSubmit)}>
+    <form className="survey-form" style={{width:'30%'}}  onSubmit={handleSubmit(context.onSubmit)}>
         <h2>Add Photo</h2>
          
         <br/>
@@ -46,7 +27,7 @@ const handleChange = (e) => {
              <a target="_blank" style={{textDecoration:'none', textAl0ign:'center'}}>Get Photo Links</a>
             </Link>
             </div>
-            <input onChange={handleChange}
+            <input onChange={context.handleChange}
               className={`mt8 ${errors.src ? 'is-invalid' : ''}`}
               type="text"
               name="src"
@@ -59,7 +40,7 @@ const handleChange = (e) => {
           </div>
           <div className="inputwrap col">
             <label  id="email-label">Heading 1</label>
-            <input onChange={handleChange}
+            <input onChange={context.handleChange}
               className={`mt8 ${errors.Heading1 ? 'is-invalid' : ''}`}
               type="text"
               name="Heading1"
@@ -70,7 +51,7 @@ const handleChange = (e) => {
           </div>
           <div className="inputwrap col">
             <label  id="email-label">Heading 2</label>
-            <input  onChange={handleChange}
+            <input  onChange={context.handleChange}
               className={`mt8 ${errors.Heading2 ? 'is-invalid' : ''}`}
               type="text"
               name="Heading2"
@@ -81,7 +62,7 @@ const handleChange = (e) => {
           </div>
           <div className="inputwrap col">
             <label  id="email-label">Description</label>
-            <textarea onChange={handleChange}
+            <textarea onChange={context.handleChange}
               className={`mt8 ${errors.Desc ? 'is-invalid' : ''}`}
               cols="30"
               rows="4"

@@ -1,56 +1,12 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "../styles/Photo.module.css";
 import PhotoCard from "./PhotoCard";
+import { dataStateContext } from "../pages/index";
+import { useContext, useState } from "react";
+
 
 export const PhotoGallery = () => {
-  const [data, setData] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
-
-  const baseURL = "https://photogallery-data.herokuapp.com/photos";
-  useEffect(() => {
-    createPost()
-  }, [data, filteredData]);
-
-  const createPost = () => {
-    axios.get(baseURL).then((response) => {
-      setData(response.data);
-    });
-  }
-  const deletePost = (id) => {
-    axios.delete(`${baseURL}/${id}`).then(() => {
-         alert("Post deleted!");
-        });
-  }
-  // const updatePost = (id) => {
-  //   let item = data[id]
-  //   setData()
-  //   // axios.put(`${baseURL}/${id}`, {body}).then(() => {
-  //   //     alert("Post Updated!");
-  //   //   });
-  // }
-
-  // //   console.log(data);
-
-  const searchItems = (searchValue) => {
-    setSearchInput(searchValue);
-    if (searchInput !== "") {
-      const searchedData = data.filter((item) => {
-        return Object.values(item.Heading1)
-          .join("")
-          .toLowerCase()
-          .includes(searchInput.toLowerCase());
-      });
-      setFilteredData(searchedData);
-    } else {
-      setFilteredData(data);
-    }
-    // console.log(searchedData);
-  };
-
-    //   if (data || filteredData !== null) return "No Photos!";
-
+  const context = useContext(dataStateContext);
+  const { control, errors } = context;
   return (
     <>
     <div style={{width:'70%'}}>
@@ -64,15 +20,15 @@ export const PhotoGallery = () => {
       />
       </div>  
       <div className={`${styles.gallery} ${styles.gallery__content_flow}`}>
-        {searchInput.length > 2
-          ? filteredData.map((item) => {
+        {context.searchInput.length > 2
+          ? context.filteredData.map((item) => {
               return (
-                <PhotoCard item={item} key={item.id} del={deletePost}/>
+                <PhotoCard item={item} key={item.id} del={context.deletePost}/>
               );
             })
-          : data.map((item, index) => {
+          : context.data.map((item, index) => {
               return (
-                <PhotoCard item={item} key={item.id} del={deletePost}/>
+                <PhotoCard item={item} key={item.id} del={context.deletePost}/>
               );
             })}
       </div>

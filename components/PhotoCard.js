@@ -8,7 +8,7 @@ const PhotoCard = (props) => {
     // const update = props.update
   return (
     <>
-      <div className={styles.figure}>
+                <div className={styles.figure}>
                   <h3>{item.Heading1}</h3>
                   <Image
                     width={350}
