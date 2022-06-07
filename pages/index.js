@@ -83,16 +83,16 @@ export default function Home() {
   };
 
   const setFormValues = (data) => {
-    setValue({
-      ...data,
-      [data.key]: data.value
-    })
-    console.log(formData)
-    // setValue("id", id.id);
-    // setValue("src", id.src);
-    // setValue("Desc", id.Desc);
-    // setValue("Heading1", id.Heading1);
-    // setValue("Heading2", id.Heading2);
+    // setValue({
+    //   ...data,
+    //   [data.key]: data.value
+    // })
+    // console.log(formData)
+    setValue("id", data.id);
+    setValue("src", data.src);
+    setValue("Desc", data.Desc);
+    setValue("Heading1", data.Heading1);
+    setValue("Heading2", data.Heading2);
     setIsUpdate(true)
   }
 
