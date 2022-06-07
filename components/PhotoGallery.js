@@ -6,7 +6,6 @@ import { useContext, useState } from "react";
 
 export const PhotoGallery = () => {
   const context = useContext(dataStateContext);
-  const { control, errors } = context;
   return (
     <>
     <div style={{width:'70%'}}>
@@ -16,19 +15,19 @@ export const PhotoGallery = () => {
         placeholder="Search by Title.."
         type="text"
         className={styles.search}
-        onChange={(e) => searchItems(e.target.value)}
+        onChange={(e) => context.searchItems(e.target.value)}
       />
       </div>  
       <div className={`${styles.gallery} ${styles.gallery__content_flow}`}>
         {context.searchInput.length > 2
-          ? context.filteredData.map((item) => {
+          ? context.filteredData?.map((item) => {
               return (
-                <PhotoCard item={item} key={item.id} del={context.deletePost}/>
+                <PhotoCard item={item} key={item.id} del={context.deletePost} edit={context.setFormValues}/>
               );
             })
-          : context.data.map((item, index) => {
+          : context.data?.map((item) => {
               return (
-                <PhotoCard item={item} key={item.id} del={context.deletePost}/>
+                <PhotoCard item={item} key={item.id} del={context.deletePost} edit={context.setFormValues}/>
               );
             })}
       </div>
